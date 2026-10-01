@@ -1,0 +1,6 @@
+{
+  "name": "Emerald Trust",
+  "description": "Institutional-grade daily task earning platform with automatic verification, 7-day scheduled task rotation, 20% referral system, and 24/7 live customer support desk.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

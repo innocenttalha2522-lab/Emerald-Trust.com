@@ -1,0 +1,37 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Users collection: Allow clients to register/sync profiles and owner to manage accounts
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+
+    // Deposits collection: Allow users to submit and view deposit requests
+    match /deposits/{depositId} {
+      allow read, write: if true;
+    }
+
+    // Withdrawals collection: Allow users to submit and view withdrawal requests
+    match /withdrawals/{withdrawalId} {
+      allow read, write: if true;
+    }
+
+    // Workspace Syncs collection: Google Drive and Google Sheets synchronization records
+    match /workspace_syncs/{syncId} {
+      allow read, write: if true;
+    }
+
+    // Connection test document
+    match /test/{docId} {
+      allow read, write: if true;
+    }
+
+    // Default deny catch-all for any other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+

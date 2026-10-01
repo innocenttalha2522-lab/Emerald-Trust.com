@@ -1,0 +1,117 @@
+{
+  "entities": {
+    "users": {
+      "title": "User",
+      "description": "User account profile and financial state",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 150 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "role": { "type": "string", "enum": ["owner", "admin", "client"] },
+        "currency": { "type": "string", "enum": ["USD", "PKR"] },
+        "country": { "type": "string", "maxLength": 100 },
+        "tierId": { "type": "string", "maxLength": 50 },
+        "depositStatus": { "type": "string", "enum": ["none", "pending", "active", "rejected"] },
+        "depositAmount": { "type": "number" },
+        "balance": { "type": "number" },
+        "totalEarned": { "type": "number" },
+        "pendingYield": { "type": "number" },
+        "referralCode": { "type": "string", "maxLength": 50 },
+        "referredBy": { "type": "string", "maxLength": 50 },
+        "referralCount": { "type": "number" },
+        "referralEarnings": { "type": "number" },
+        "completedAdsCount": { "type": "number" },
+        "kycVerified": { "type": "boolean" },
+        "createdAt": { "type": "string", "maxLength": 100 },
+        "updatedAt": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["uid", "email", "name", "role", "currency", "tierId", "depositStatus", "balance", "totalEarned"]
+    },
+    "deposits": {
+      "title": "Deposit",
+      "description": "Investment package deposit verification requests",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "userEmail": { "type": "string", "maxLength": 150 },
+        "userName": { "type": "string", "maxLength": 100 },
+        "packageId": { "type": "string", "maxLength": 50 },
+        "packageName": { "type": "string", "maxLength": 100 },
+        "currency": { "type": "string", "enum": ["USD", "PKR"] },
+        "amount": { "type": "number" },
+        "paymentMethod": { "type": "string", "maxLength": 100 },
+        "senderName": { "type": "string", "maxLength": 100 },
+        "senderAccountOrPhone": { "type": "string", "maxLength": 100 },
+        "transactionReference": { "type": "string", "maxLength": 100 },
+        "screenshotUrl": { "type": "string", "maxLength": 500 },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "createdAt": { "type": "string", "maxLength": 100 },
+        "reviewedAt": { "type": "string", "maxLength": 100 },
+        "reviewedBy": { "type": "string", "maxLength": 100 },
+        "notes": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["id", "userId", "userEmail", "userName", "packageId", "packageName", "currency", "amount", "paymentMethod", "senderName", "transactionReference", "status", "createdAt"]
+    },
+    "withdrawals": {
+      "title": "Withdrawal",
+      "description": "Earnings and capital payout requests",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "userEmail": { "type": "string", "maxLength": 150 },
+        "userName": { "type": "string", "maxLength": 100 },
+        "amount": { "type": "number" },
+        "currency": { "type": "string", "enum": ["USD", "PKR"] },
+        "method": { "type": "string", "maxLength": 100 },
+        "accountTitle": { "type": "string", "maxLength": 100 },
+        "accountNumberOrIban": { "type": "string", "maxLength": 100 },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected", "processing"] },
+        "createdAt": { "type": "string", "maxLength": 100 },
+        "reviewedAt": { "type": "string", "maxLength": 100 },
+        "reviewedBy": { "type": "string", "maxLength": 100 },
+        "notes": { "type": "string", "maxLength": 500 },
+        "txHashOrRef": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["id", "userEmail", "userName", "amount", "currency", "method", "accountTitle", "accountNumberOrIban", "status", "createdAt"]
+    },
+    "workspace_syncs": {
+      "title": "WorkspaceSync",
+      "description": "Google Drive and Google Sheets synchronization records",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "userEmail": { "type": "string", "maxLength": 150 },
+        "service": { "type": "string", "enum": ["drive", "sheets"] },
+        "targetId": { "type": "string", "maxLength": 200 },
+        "targetName": { "type": "string", "maxLength": 200 },
+        "targetUrl": { "type": "string", "maxLength": 500 },
+        "recordCount": { "type": "number" },
+        "syncedAt": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["id", "userId", "userEmail", "service", "targetId", "targetName", "syncedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/users" },
+      "description": "User profile, balance, and package state"
+    },
+    "/deposits/{depositId}": {
+      "schema": { "$ref": "#/entities/deposits" },
+      "description": "Deposit verification queue"
+    },
+    "/withdrawals/{withdrawalId}": {
+      "schema": { "$ref": "#/entities/withdrawals" },
+      "description": "Payout settlement verification queue"
+    },
+    "/workspace_syncs/{syncId}": {
+      "schema": { "$ref": "#/entities/workspace_syncs" },
+      "description": "Google Drive and Sheets synchronization logs"
+    }
+  }
+}
